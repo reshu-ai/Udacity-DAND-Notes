@@ -18,5 +18,5 @@ Question -> Wrangle -> Explore -> Draw Conclusions -> Communicate
 
     - Bayesian Estimation
     
-- [Bootstraping](https://stats.stackexchange.com/questions/26088/explaining-to-laypeople-why-bootstrapping-works) devised by Bradley Efron
+- [Bootstrapping](https://stats.stackexchange.com/questions/26088/explaining-to-laypeople-why-bootstrapping-works) devised by Bradley Efron
 
