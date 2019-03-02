@@ -20,3 +20,7 @@ Question -> Wrangle -> Explore -> Draw Conclusions -> Communicate
     
 - [Bootstrapping](https://stats.stackexchange.com/questions/26088/explaining-to-laypeople-why-bootstrapping-works) devised by Bradley Efron
 
+- [Data Wrangling with MongoDB](https://in.udacity.com/course/data-wrangling-with-mongodb--ud032)
+
+- [Quick R revision](https://www.statmethods.net/management/subset.html)
+
