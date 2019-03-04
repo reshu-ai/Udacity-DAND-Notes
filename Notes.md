@@ -26,7 +26,7 @@ Important terms-
     - Sample - subset of the population
     - Statistic numeric summary about a sample
     
- [Baye's Diag](https://github.com/reshusinghhh/ParchnPosey/blob/master/bayes.png)
+ ![Baye's Diag](https://github.com/reshusinghhh/ParchnPosey/blob/master/bayes.png)
  
  
 
