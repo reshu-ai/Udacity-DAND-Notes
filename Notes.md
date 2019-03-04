@@ -25,4 +25,8 @@ Important terms-
     - Parameter - numeric summary about a population
     - Sample - subset of the population
     - Statistic numeric summary about a sample
+    
+ [Baye's Diag](https://github.com/reshusinghhh/ParchnPosey/blob/master/bayes.png)
+ 
+ 
 
