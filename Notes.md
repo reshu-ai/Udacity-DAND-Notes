@@ -33,4 +33,17 @@ Important terms-
  ![eg2](https://github.com/reshusinghhh/ParchnPosey/blob/master/robo1.png)
  Robot sensing and Baye's Theorem
  
+ Common hypothesis tests include:
+
+   - Testing a population mean [One sample t-test](http://sites.utexas.edu/sos/guided/inferential/numeric/claim/one-sample-t/)
+
+   - Testing the difference in means [Two sample t-test](https://www.isixsigma.com/tools-templates/hypothesis-testing/making-sense-two-sample-t-test/)
+
+   - Testing the difference before and after some treatment on the same individual [Paired t-test](http://www.statstutor.ac.uk/resources/uploaded/paired-t-test.pdf)
+
+   - Testing a population proportion [One sample z-test](https://stattrek.com/statistics/dictionary.aspx?definition=one-sample%20z-test)
+
+   - Testing the difference between population proportions [Two sample z-test](https://newonlinecourses.science.psu.edu/stat414/node/268/)
+
+ 
 
