@@ -1,6 +1,6 @@
 ## The Stroop Effect
 
-[Stroop Effect](https://www.verywellmind.com/what-is-the-stroop-effect-2795832)
+[Stroop Effect](https://www.verywellmind.com/what-is-the-stroop-effect-2795832) : In psychology, the Stroop effect is a demonstration of interference in the reaction time of a task. 
 
 Background:
 
