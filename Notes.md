@@ -27,6 +27,10 @@ Important terms-
     - Statistic numeric summary about a sample
     
  ![Baye's Diag](https://github.com/reshusinghhh/ParchnPosey/blob/master/bayes.png)
- 
+  Baye's Diag.
+  
+ ![Robosense Example](https://github.com/reshusinghhh/ParchnPosey/blob/master/robosense.png)
+ ![eg2](https://github.com/reshusinghhh/ParchnPosey/blob/master/robo1.png)
+ Robot sensing and Baye's Theorem
  
 
