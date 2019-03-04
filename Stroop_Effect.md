@@ -1,10 +1,10 @@
-##The Stroop Effect
+## The Stroop Effect
 
 [Stroop Effect](https://www.verywellmind.com/what-is-the-stroop-effect-2795832)
 
 Background:
 
-There are some key terms and concepts you should understand, including:
+There are some key terms and concepts we should understand, including:
 
 
 - Selective attention: This is the way we focus on a particular item for a selected period of time.
