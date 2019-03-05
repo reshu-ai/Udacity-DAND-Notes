@@ -11,6 +11,8 @@
 
 - [Tukey's method](https://www.itl.nist.gov/div898/handbook/prc/section4/prc471.htm)
 
+- [Q-value](http://www.nonlinear.com/support/progenesis/comet/faq/v2.0/pq-values.aspx)
+
 ## Descriptive Statistics
 
 **Descriptive statistics** is about describing our collected data using the measures discussed throughout this lesson: measures of center, measures of spread, shape of our distribution, and outliers. We can also use plots of our data to gain a better understanding.
