@@ -24,3 +24,5 @@ Question -> Wrangle -> Explore -> Draw Conclusions -> Communicate
 
 - [Quick R revision](https://www.statmethods.net/management/subset.html)
 
+- [Tidying Data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)
+
