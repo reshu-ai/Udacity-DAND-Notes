@@ -26,3 +26,5 @@ Question -> Wrangle -> Explore -> Draw Conclusions -> Communicate
 
 - [Tidying Data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)
 
+- [Distributed SQL Query Engine](https://prestodb.github.io/)
+
