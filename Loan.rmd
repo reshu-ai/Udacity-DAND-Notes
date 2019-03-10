@@ -1,0 +1,783 @@
+---
+title: "Prosper Loan Data Analysis"
+author: "Reshu"
+date: "9 March 2019"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+```{r '\x60r mean(cars$speed)\x60'}
+```
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+========================================================
+Introduction: PROSPER LOAN DATA SET
+
+It is financial dataset.
+
+Brief background about Prosper company: 
+
+Prosper was founded in 2005 as the first peer-to-peer lending marketplace in the United States. Since then, Prosper has facilitated more than $14 billion in loans to more than 880,000 people.
+
+Through Prosper, people can invest in each other in a way that is financially and socially rewarding. Borrowers apply online for a fixed-rate, fixed-term loan between $2,000 and $40,000. Individuals and institutions can invest in the loans and earn attractive returns. Prosper handles all loan servicing on behalf of the matched borrowers and investors.
+
+Prosper Marketplace is backed by leading investors including Sequoia Capital, Francisco Partners, Institutional Venture Partners, and Credit Suisse NEXT Fund. 
+
+Source-https://www.prosper.com/
+
+
+Loading dataset-
+
+```{r 1}
+
+
+library(ggplot2)
+loan <- read.csv('/home/reshu/Desktop/prosperLoanData.csv')
+
+#Reading and understanding data
+str(loan)
+
+names(loan)
+
+summary(loan)
+
+head(loan)
+
+dim(loan)
+
+#We observe a lot of NAs. We must avoid analysing the columns with NAs
+
+```
+
+Obervation:
+
+This data set contains 113,937 loans with 81 variables on each loan, including loan amount, borrower rate (or interest rate), current loan status, borrower income, borrower employment status, borrower credit history, and the latest payment information.
+
+##UNIVARIATE PLOTS -
+
+
+BorrowerAPR:
+
+
+A number of factors—such as term, type of interest rate etc.—can affect the cost of credit and make it hard to compare multiple loans. The APR makes comparison shopping easier. It’s a common unit of measurement for loans.
+
+The APR figures in not just your interest rate, but also some fees associated with your loan over its lifetime. At Prosper, this means the closing fee charged when you first borrow the money. This closing fee is paid out of the loan proceeds when the loan originates. 
+
+
+Distribution of BorrowAPR-
+
+
+```{r}
+
+summary(loan$BorrowerAPR)
+
+
+```
+
+```{r}
+
+ggplot(aes(x = BorrowerAPR), data = loan) +
+  geom_histogram(fill = '#3CB371') 
+
+```
+
+The distibution is roughly normal, except of peaks on right side.We observed few NA’s in the above statistics' summary, it is better to filter out those 25 rows consisting of NAs.
+
+CreditGrade:
+
+The Credit rating that was assigned at the time the listing went live. Applicable for listings pre-2009 period and will only be populated for those listings.
+
+```{r Credit Grades}
+
+ggplot(aes(x = CreditGrade), data = loan) +
+  geom_bar(color = 'black', fill = '#3CB371') 
+
+```
+
+
+
+```{r Credit Grades- limiting the axes}
+
+#removing blank values
+
+ggplot(aes(x = CreditGrade), data = loan) +
+  geom_bar(color = 'black', fill = '#3CB371') +
+  scale_x_discrete(limits = c('A', 'AA', 'B', 'C', 'D','E','HR', 'NC'))
+
+```
+Observation:
+
+We observe that count of NC (no credit) is very small.It implies that only a very few borrowers were not graded at the time of the listing.
+
+Let's limit the axis further by removing NC
+
+
+```{r Credit Grades1- limiting the axes}
+
+#removing blank values
+
+ggplot(aes(x = CreditGrade), data = loan) +
+  geom_bar(color = 'black', fill = '#3CB371') +
+  scale_x_discrete(limits = c('A', 'AA', 'B', 'C', 'D','E','HR'))
+
+```
+
+
+ProsperScore:
+
+
+A custom risk score built using historical Prosper data. The score ranges from 1-10, with 10 being the best, or lowest risk score. Applicable for loans originated after July 2009.
+
+
+```{r Prosper Score}
+
+ggplot(aes(x = ProsperScore), data = loan) +
+  geom_histogram(color = 'black', fill = '#228B22') 
+
+```
+
+
+This histogram seems full of spikes due to NAs
+Let's plot bar-graph,that would be more suitable for non-continous data-column.
+
+
+```{r Prosper1 Score}
+
+ggplot(aes(x = ProsperScore), data = loan) +
+  geom_bar(color = 'black', fill = '#228B22') 
+
+```
+
+
+```{r Prosper1 Score summary}
+
+summary(loan$ProsperScore)
+
+```
+
+LoanStatus:The current status of the loan: Cancelled, Chargedoff, Completed, Current, Defaulted, FinalPaymentInProgress, PastDue. 
+
+Since it is a categorical variable, we observe its bar graph.
+
+Distribution of LoanStatus
+
+
+```{r Loan Status}
+
+ggplot(aes(x = LoanStatus), data = loan) +
+  geom_bar(color = 'black', fill = '#3CB371') +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+This graph shows that most of the Loan Status are in 'Current' state, i.e. currently on-going loan processes and after that mostly are in "Completed" status.
+
+
+
+StatedMonthlyIncome:
+
+The monthly income the borrower stated at the time the listing was created
+Since it being a numeric variable, we investigate the histogram.
+
+
+
+
+
+
+```{r StatedMonthlyIncome}
+
+ggplot(aes(x = StatedMonthlyIncome), data = loan) +
+  geom_histogram(fill = '#7CFC00') 
+
+#since it contains lot of outliers, let's limit the x-axis
+
+ggplot(aes(x = StatedMonthlyIncome), data = loan) +
+  geom_histogram(fill = '#3CB371') +
+    scale_x_continuous(limits = c(0,100000))
+
+
+
+
+
+  
+```
+
+
+Loan Performance at State Level:
+
+
+ Being a numeric variable, we investigate the histogram.
+ 
+  The distribution is right skewed, as observed in the histogram.
+  [Mean > Median]
+  
+
+Distribution of Loan Amount
+
+  
+LoanOriginalAmount
+
+The origination amount of the loan.
+
+
+```{r Original Loan Amount}
+
+
+ggplot(aes(x = LoanOriginalAmount), data = loan) +
+  geom_histogram(fill = '#3CB371') 
+   
+
+
+```
+
+
+This distribution is right skewed, which is obvious from the histogram, except couple of peaks. Moreover, we also notice that it is quite rare for borrowers to ask for huge amount of loans through prosper.
+
+EmploymentStatus:
+
+The employment status of the borrower at the time they posted the listing.
+Since,the data is categorical, use histogram.
+
+```{r Employment Staus}
+
+
+ggplot(aes(x = EmploymentStatus), data = loan) +
+  geom_bar(color = 'black', fill = '#3CB371') +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+   
+
+
+```
+
+As can be observed most of the loan takers are Employed. The first category with no label is NA actually.
+
+Distribution of Estimated Loss
+
+
+EstimatedLoss: 
+
+Estimated loss is the estimated principal loss on charge-offs. Applicable for loans originated after July 2009.
+
+
+```{r Estimated Loss}
+
+
+ggplot(aes(x = EstimatedLoss), data = loan) +
+  geom_histogram(color = 'black', fill = '#3CB371') 
+
+
+
+```
+
+
+
+```{r limited axis}
+
+
+ggplot(aes(x = EstimatedLoss), data = loan) +
+  geom_histogram(color = 'black', fill = '#3CB371') +
+  scale_x_continuous(limits = c(0.0, 0.2))
+
+
+
+
+
+```
+
+
+
+
+
+
+
+##BIVARIATE PLOTS -
+
+
+CreditGrade -The Credit rating that was assigned at the time the listing went live.
+BorrowerAPR -	The Borrower’s Annual Percentage Rate (APR) for the loan.
+
+```{r}
+
+#Jitter
+ggplot(aes(x = CreditGrade, y = BorrowerAPR), data = loan) +
+  geom_jitter(alpha = 1/20, color = 'darkgreen') 
+                  
+```
+
+Since the distribution is categorical,let's plot boxplot as that would be more suitable.
+
+```{r BorrowerAPR vs CreditGrade}
+
+#Boxplots
+#Removing NAs category
+
+ggplot(aes(x = CreditGrade, y = BorrowerAPR), data = loan) +
+  geom_boxplot(alpha = 1/20, color = 'darkgreen') +
+  scale_x_discrete(limits = c('A', 'AA', 'B', 'C', 'D','E','HR', 'NC'))
+                  
+```
+Highest median is for category "HR" Credit Garde , the lowest median is for category "AA" Credit Grade.
+
+
+
+InquiriesLast6Months:
+
+Number of inquiries in the past six months at the time the credit profile was pulled.
+
+```{r BorrowerAPR vs  InquiriesLast6Months}
+
+#Jitter
+
+ggplot(aes(x = InquiriesLast6Months, y = BorrowerAPR), data = loan) +
+  geom_jitter(alpha= 1/15, color = 'limegreen', size =4) +
+  xlim(0, 20)
+
+
+
+  
+```
+Using the scatterplot, we observe absence of linear correlation between BorrowerAPR and InquiriesMadeWithinLast6Months.
+
+
+
+CreditScoreRangeLower - The lower value representing the range of the borrower’s credit score as provided by a consumer credit rating agency.
+
+CreditScoreRangeUpper - The upper value representing the range of the borrower’s credit score as provided by a consumer credit rating agency.
+
+
+```{r Credit Score}
+
+#Jitter
+
+ggplot(aes(x =CreditScoreRangeUpper, y = BorrowerAPR), data = loan) +
+  geom_jitter(alpha= 1/20,color = 'darkgreen') 
+
+
+
+
+```
+
+```{r Credit Score2}
+
+#Jitter
+
+ggplot(aes(x =CreditScoreRangeLower, y = BorrowerAPR), data = loan) +
+  geom_jitter(alpha= 1/20, color = 'darkgreen')
+
+
+
+
+```
+Both plots show similar trends. There is no linear correlation between CreditScoreRange and BorrowerAPR.
+
+
+
+CurrentCreditLines -Number of current credit lines at the time the credit profile was pulled.
+
+OpenCreditLines - Number of open credit lines at the time the credit profile was pulled.
+
+```{r CreditLines}
+
+#Jitter
+
+ggplot(aes(x = CurrentCreditLines, y = OpenCreditLines), data = loan) +
+  geom_jitter(alpha= 1/10, color = 'limegreen')
+
+
+
+
+```
+
+Using the scatterplot,we can obsrve that there is linear corrlelation between CurrentCreditLines and OpenCreditLines.
+
+
+
+
+LoanOriginalAmount :	The origination amount of the loan.
+Term :	The length of the loan expressed in months.
+
+
+```{r Income Range vs Debt to Income Ratio}
+
+#Boxplots
+#Removing NAs category
+
+ggplot(aes(x = IncomeRange, y = DebtToIncomeRatio), data = loan) +
+  geom_boxplot(alpha = 1/20, color = 'darkgreen') +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  
+                  
+```
+As can be observed, unemployed people's income range is having very long range of spread for debt to income ratio,obviously because debt>>income for them.
+
+
+
+```{r Loan Original Amount}
+
+#Boxplots
+#Removing NAs category
+
+ggplot(aes(x = IncomeRange, y = LoanOriginalAmount), data = loan) +
+  geom_boxplot(alpha = 1/20) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  
+                  
+```
+
+As expected, income range $100,000+ people take great amount of loan.
+
+```{r EstimatedLoss}
+
+#Boxplots
+
+
+ggplot(aes(x = IncomeRange, y = EstimatedLoss), data = loan) +
+  geom_boxplot(alpha = 1/20) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  
+                  
+```
+ As expected, the estimated loss for not employed people is highest.
+ 
+
+```{r }
+
+
+
+ggplot(aes(x = IncomeRange, y = CreditGrade), data = loan) +
+  geom_jitter(alpha = 1/20, color = 'darkgreen') +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_discrete(limits = c('A', 'AA', 'B', 'C', 'D','E','HR', 'NC'))
+  
+  
+                  
+```
+
+As expected and also observed, Not employed people has no distribution in Credit-Grade at all as they might not be satisfying the inhibited criteria.
+
+
+Term-	The length of the loan expressed in months
+
+```{r Term}
+
+
+ggplot(loan, aes(Term, LoanOriginalAmount, group = Term)) +
+  geom_boxplot() +
+  scale_x_continuous(breaks = c(0,12,36,60)) +
+  theme_minimal()
+``` 
+
+5 year(60 months) borrowers seem to be more credit-worthy on average.
+
+CurrentCreditLines- Number of current credit lines at the time the credit profile was pulled.
+
+
+
+
+```{r}
+ggplot(aes(x = IncomeRange, y = CurrentCreditLines), data =  loan) +
+  geom_boxplot(alpha = 1/20) +
+  theme(axis.text.x = element_text(angle = 55, hjust = 1))
+```
+
+As observed plus it can be analogically deduced too that unemployed people have low credit lines whereas the people having highest income range  have high credit lines.
+
+
+
+```{r}
+ggplot(aes(x = IncomeRange, y = OpenCreditLines), data =  loan) +
+  geom_boxplot(alpha = 1/20) +
+  theme(axis.text.x = element_text(angle = 55, hjust = 1))
+```
+
+
+
+**Making a new column "year" from "DateCreditPulled"**
+
+```{r Date to Year}
+loan$year <- format(as.Date(loan$DateCreditPulled), "%Y") 
+head(loan$year)
+head(loan)
+```
+
+
+
+```{r Zoom out- limit the axis}
+
+#zooming out
+
+
+ggplot(aes(x = loan$year, y = LoanOriginalAmount ), data = loan) +
+  geom_boxplot(alpha = 1/20) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(limits = c('2008', '2009', '2010', '2011', '2012','2013','2014'))
+
+  
+  
+                  
+```
+Amount of loan taken is highest for year 2013 on an average. Most of the people have taken loan in 2013.2nd highest is 2014 in that terms.
+
+
+```{r}
+
+
+
+ggplot(aes(x = loan$year, y = BorrowerAPR ), data = loan) +
+  geom_boxplot(alpha = 1/20) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+
+  
+  
+                  
+```
+
+The yearly distribution of Borrower APR is quite unusual and there is no as such yearly pattern of regular increment or decrement observed here.
+
+```{r }
+loan$month <- format(as.Date(loan$DateCreditPulled), "%m") 
+head(loan$month)
+head(loan)
+
+
+
+
+
+ggplot(aes(x = loan$month, y = LoanOriginalAmount  ), data = loan) +
+  geom_boxplot(alpha = 1/20) +
+  theme(axis.text.x = element_text(angle = 40, hjust = 1)) 
+
+
+  
+  
+                  
+```
+
+If we see the Amount of loan taken month wisely,most of the amount are attributed to 01-January and 12-December.
+
+### MULTIVARIATE PLOTS
+
+
+```{r}
+
+
+ggplot(aes(x = DebtToIncomeRatio, y = BorrowerRate), data = loan) +
+  geom_point(aes(color = CreditGrade),
+             position = position_jitter(h = 0), alpha = 0.6) +
+  scale_colour_brewer(palette = "BuGn")  + theme_dark() +
+  xlim(0, 7)
+ 
+   
+```
+
+
+
+
+```{r }
+
+
+ggplot(aes(x = DebtToIncomeRatio, y = BorrowerRate), data = loan) +
+  geom_point(aes(color = CreditGrade),
+             position = position_jitter(h = 0), alpha = 0.6) +
+  scale_colour_brewer(palette = "BuGn")  + theme_dark() +
+   geom_smooth(aes(color = CreditGrade), se = F) +
+  xlim(0,7)
+  
+ 
+   
+```
+This is a great plot with a lot of information. Here we have a scatter plot of borrower’s APR and the debt to income ratio of the borrower, with the colors describing the Credit Grade given to the particular loan.The very first thing to be noticed and found interesting is that ‘A’ category loans seem to have a lower APRs and a smaller range of debt-to-income ratios, both of which indicate less risk.
+Also, there is this unusual horizontal line in the ‘E’ category that extends past 1 till 7.
+
+
+
+```{r}
+
+
+ggplot(aes(y = EstimatedLoss, x = DebtToIncomeRatio), data = loan) +
+  geom_point(aes(color = ProsperScore), alpha = 0.6) +
+  xlim(0, 3) 
+
+   
+```
+Here we have a scatter plot of Estimated Loss( It is the estimated principal loss on charge-offs) and the debt to income ratio of the borrower, with the colors describing the Prosper Score(A custom risk score built using historical Prosper data. The score ranges from 1-10, with 10 being the best, or lowest risk score. ) given to the particular loan.
+
+If Estimated Loss is low and DebtToIncomeRatio are low , the custom risk is lowest.
+
+
+
+
+```{r}
+
+
+ggplot(aes(y = EstimatedReturn, x = DebtToIncomeRatio), data = loan) +
+  geom_point(aes(color = ProsperScore), alpha = 0.6) 
+   
+```
+Here we have a scatter plot of Estimated Return(It is the difference between the Estimated Effective Yield and the Estimated Loss Rate) and the debt to income ratio of the borrower, with the colors describing the Prosper Score.
+
+Estimated Effective Yield -Effective yield is equal to the borrower interest rate (i) minus the servicing fee rate, (ii) minus estimated uncollected interest on charge-offs, (iii) plus estimated collected late fees
+
+Estimated Loss Rate - The estimated principal loss on charge-offs
+
+Prosper Score is better for low DebtToIncome ratio given Estimted Return be higher.
+
+
+
+```{r}
+
+
+ggplot(aes(y = OnTimeProsperPayments, x = DebtToIncomeRatio), data = loan) +
+  geom_point(aes(color = ProsperScore), alpha = 0.6) +
+  xlim(0, 2)
+   
+```
+
+
+OnTimeProsperPayments - Number of on time payments the borrower had made on Prosper loans at the time they created this listing. This value will be null if the borrower has no prior loans.
+
+Prosper Score is high for low debt ratio given that borrower has no prior loans or less no. of loans undertaken at listing time.
+
+### Final 3 Plots and Summary
+
+
+# PLOT 1
+
+```{r }
+
+library(gridExtra)
+p1 <- 
+ggplot(aes(x = loan$year, y = BorrowerAPR ), data = loan) +
+  geom_boxplot(alpha = 1/20, color = 'limegreen') +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+p2 <- ggplot(aes(x = loan$year, y = LoanOriginalAmount ), data = loan) +
+  geom_boxplot(alpha = 1/20, color = 'orange') +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+p3 <- ggplot(aes(x = loan$year, y = BorrowerRate ), data = loan) +
+  geom_boxplot(alpha = 1/20, color = 'blue') +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+grid.arrange(p1, p2, p3, ncol = 1)
+
+
+
+
+
+
+```
+
+Description :
+
+For different years, Borrower Rate and Loan Original Amounts are different and thus BorrowerAPR(The Borrower’s Annual Percentage Rate (APR) for the loan.) differ too.
+
+BorrowerAPR box plots are quite identical to BorrowerRate on annual basis as can be viewed in plot in green and blue.
+
+Loan in Original amount , the box plots in orange has different trend from other two plots annualy.
+
+
+
+
+
+
+# PLOT 2
+
+```{r }
+
+library(gridExtra)
+p1 <- ggplot(aes(y = EstimatedLoss, x = DebtToIncomeRatio), data = loan) +
+  geom_point(aes(color = ProsperScore), alpha = 0.6) 
+  
+
+p2 <- ggplot(aes(y = EstimatedReturn, x = DebtToIncomeRatio), data = loan) +
+  geom_point(aes(color = ProsperScore), alpha = 0.6) 
+ 
+
+p3 <- ggplot(aes(y = OnTimeProsperPayments, x = DebtToIncomeRatio), data = loan) +
+  geom_point(aes(color = ProsperScore), alpha = 0.6) 
+ 
+grid.arrange(p1, p2, p3, ncol = 1) 
+
+
+
+
+```
+Description :
+
+When the debt to income ratio are low plus Estimated loss, one time prosperity payment and Estimated Return are low , more light blue dots are visible which denotes higher Prosper Score.
+
+
+
+
+# PLOT 3
+```{r }
+
+ggplot(data=subset(loan, loan$CreditScoreRangeLower > 660),
+  aes(x=BorrowerAPR, y=LoanOriginalAmount, color=CreditScoreRangeUpper)) +
+  geom_point(alpha=0.09, position='jitter') +
+  scale_colour_gradient(low="yellow", high="brown") +
+  ggtitle("Loan Amount by Credit Score and Interest Rate") +
+  facet_wrap(~year) +
+  theme_bw()
+
+
+```
+
+
+Description :
+
+The borrowers with high credit scores are in brown color region on the left side. They generally have lower interest rates and larger loan amounts. In 2013 and 2014, much more yellow dots are visible there(credit score ~700) borrowers.
+
+### REFLECTION:
+
+The Prosper Loan data set contains 113,937 loans with 81 variables on each loan, including loan amount, borrower rate (or interest rate), current loan status, borrower income, borrower employment status, borrower credit history, and the latest payment information.
+
+I explored the data set and tried best to find important relations between various variables.I converted Date into Year and stored in seperate column and used that column to plot the yearly/annual trend. Also,explored about various themes and ggplotting techniques to plot quite eye appeasing and easily understandable plots.The main difficuly I had with the data mainly from understanding the variables and then selecting the appropriate ones to analyze obbiously there are a lot of variables to explore. Many variables are yet unexplored and I hope to explore them in near future.
+
+Some limitation to the dataset:Too many NAs value, Too many columns with NAs value,not easy to interpret.
+
+High probability of outliers effecting the distribution as the length of dataset is too long.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###References:
+
+- Terms and definitions : https://rstudio-pubs-static.s3.amazonaws.com/86324_ab1e2e2fa210452f80a1c6a1476d7a2a.html
+
+- For themes
+https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf
+
+- For Color codes
+https://www.rapidtables.com/web/color/green-color.html
+
+- https://rpubs.com/olaobaju/prosperloan
+
+
+
+
+
