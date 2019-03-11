@@ -46,6 +46,9 @@ Important terms-
    - Testing a population proportion [One sample z-test](https://stattrek.com/statistics/dictionary.aspx?definition=one-sample%20z-test)
 
    - Testing the difference between population proportions [Two sample z-test](https://newonlinecourses.science.psu.edu/stat414/node/268/)
+   
+   ### DATA WRANGLING
+   - [Python with Context Managers](https://jeffknupp.com/blog/2016/03/07/python-with-context-managers/)
 
  
 
