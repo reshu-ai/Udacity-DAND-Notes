@@ -49,6 +49,11 @@ Important terms-
    
    ### DATA WRANGLING
    - [Python with Context Managers](https://jeffknupp.com/blog/2016/03/07/python-with-context-managers/)
+   - [Word Clouds](https://amueller.github.io/word_cloud/)
+   - [RDBMS VS Flat Files](https://www.cac.cornell.edu/education/Training/DataAnalysis/RelationalDatabases.pdf)
+   
+   ### [COMMON SHORTCUTS in Jupyter Notebook](https://www.dataquest.io/blog/jupyter-notebook-tips-tricks-shortcuts/)
+   
 
  
 
