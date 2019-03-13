@@ -54,6 +54,8 @@ Important terms-
    
    ### [COMMON SHORTCUTS in Jupyter Notebook](https://www.dataquest.io/blog/jupyter-notebook-tips-tricks-shortcuts/)
    
+   ### [REST-API-in-py-to-download-results-to-CSV/JS0N](https://community.microstrategy.com/s/article/Sample-REST-API-in- Python-download-report-results-to-CSV-or-JSON?language=en_US)
+   
 
  
 
