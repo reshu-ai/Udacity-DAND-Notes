@@ -28,3 +28,5 @@ Question -> Wrangle -> Explore -> Draw Conclusions -> Communicate
 
 - [Distributed SQL Query Engine](https://prestodb.github.io/)
 
+- [ CAP Theorem ](https://www.youtube.com/watch?v=pSoKUfLTe8Y)
+
